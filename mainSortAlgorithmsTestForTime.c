@@ -17,6 +17,7 @@ void quickSortDecrease(int A[], int p, int r);
 void maxHeapify(int arr[], int size, int i);
 
 void heapSort(int arr[], int sz);
+
 //---------------
 void selectSort(int A[], int size);
 
@@ -31,7 +32,7 @@ int main()
 {
 ////=========== Random Increase Decrease arrays =======
 //------------- Random array -------
-    const int sz = 10000;
+    const int sz = 100000;
     int randArr[sz];     // for Random array
 
     srand(1);
@@ -135,7 +136,7 @@ int main()
 
     printf("\n####################### SELECTSORT Algorithm Test ######################## \n");
 //----
- t1 = clock();
+    t1 = clock();
     selectSort(sortedArrSelectSort, sz);
     t2 = clock();
 
@@ -163,7 +164,7 @@ int main()
 int partition(int A[], int p, int r)
 {
     int x = A[r];
-    int i = (p-1);
+    int i = p-1;
 
     for (int j = p; j<=r-1; j++) {
         if (A[j]<=x) {
@@ -194,7 +195,7 @@ void quickSort(int A[], int p, int r)  //for increase numbers
 int partitionD(int A[], int p, int r)
 {
     int x = A[r];
-    int i = (p-1);
+    int i = p-1;
 
     for (int j = p; j<=r-1; j++) {
         if (A[j]>=x) {
