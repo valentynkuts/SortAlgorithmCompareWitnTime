@@ -13,19 +13,23 @@ int partitionD(int A[], int p, int r);
 void quickSortDecrease(int A[], int p, int r);
 
 //--------
+//void maxHeapify(int arr[], int size, int i);
+//
+//void buildMaxHeap(int arr[], int size);
+//
+//void heapSort(int A[], int size);
+//
+////--------
+//void swap(int* a, int* b);
+//
+//void heapify(int arr[], int n, int i);
+//
+//void heapSort1(int arr[], int n);
+//---------
+
 void maxHeapify(int arr[], int size, int i);
 
-void buildMaxHeap(int arr[], int size);
-
-void heapSort(int A[], int size);
-
-//--------
-void swap(int* a, int* b);
-
-void heapify(int arr[], int n, int i);
-
-void heapSort1(int arr[], int n);
-
+void heapSort(int arr[], int sz);
 //---------------
 void selectSort(int A[], int size);
 
@@ -40,7 +44,7 @@ int main()
 {
 ////=========== Random Increase Decrease arrays =======
 //------------- Random array -------
-    const int sz = 100000;
+    const int sz = 10000;
     //const int sz = 20;
     int randArr[sz];     // for Random array
 
@@ -150,8 +154,8 @@ int main()
 
     //print(sortedArrHeapSort, sz);
     t1 = clock();
-    //heapSort(sortedArrHeapSort, sz);
-    heapSort1(sortedArrHeapSort, sz);
+    heapSort(sortedArrHeapSort, sz);
+    //heapSort1(sortedArrHeapSort, sz);
     t2 = clock();
 
     //print(sortedArrHeapSort, sz);
@@ -161,8 +165,8 @@ int main()
 
     //print(randArrHeapSort, sz);
     t1 = clock();
-    //heapSort(randArrHeapSort, sz);
-    heapSort1(randArrHeapSort, sz);
+    heapSort(randArrHeapSort, sz);
+    //heapSort1(randArrHeapSort, sz);
     t2 = clock();
 
     //print(randArrHeapSort, sz);
@@ -173,8 +177,8 @@ int main()
 
     //print(reverseSortedArrHeapSort, sz);
     t1 = clock();
-    //heapSort(reverseSortedArrHeapSort, sz);
-    heapSort1(reverseSortedArrHeapSort, sz);
+    heapSort(reverseSortedArrHeapSort, sz);
+    //heapSort1(reverseSortedArrHeapSort, sz);
     t2 = clock();
 
     //print(reverseSortedArrHeapSort, sz);
@@ -292,104 +296,145 @@ void quickSortDecrease(int A[], int p, int r)
     }
 }
 
-////=============== HeapSort =======================
+//////=============== HeapSort =======================
+//
+//void maxHeapify(int arr[], int size, int i) //i - index
+//{
+//    int l = 2*i+1;
+//    int r = 2*i+2;
+//    //int l = 2 * i ;
+//    //int r = 2 * i + 1;
+//    int largest;
+//    //int largest = i;
+//    int temp;
+//
+//    if (l<=size && arr[l]>arr[i]) {
+//        largest = l;
+//    }
+//    else {
+//        largest = i;
+//    }
+//
+//    if (r<=size && arr[r]>arr[largest]) {
+//        largest = r;
+//    }
+//
+//    if (largest!=i) {
+//        temp = arr[i];
+//        arr[i] = arr[largest];
+//        arr[largest] = temp;
+//
+//        maxHeapify(arr, size, largest);
+//    }
+//}
+//
+//void buildMaxHeap(int arr[], int size)
+//{
+//    int n = (size-1)/2;
+//    for (int i = n; i>=0; i--)
+//        maxHeapify(arr, size, i);
+//}
+//
+//void heapSort(int A[], int size)
+//{
+//    buildMaxHeap(A, size);
+//    int temp;
+//    int heapSize = size;
+//    for (int i = size; i>=1; i--) {
+//        temp = A[i];
+//        A[i] = A[0];
+//        A[0] = temp;
+//
+//        heapSize = heapSize-1;
+//        maxHeapify(A, heapSize, 0);
+//    }
+//}
+//////=============== HeapSort 1=======================
+//
+//void swap(int* a, int* b)
+//{
+//    int t = *a;
+//    *a = *b;
+//    *b = t;
+//}
+//
+//void heapify(int arr[], int n, int i)
+//{
+//    int largest = i;
+//    int l = 2*i+1;
+//    int r = 2*i+2;
+//
+//    // if left child is larger than root
+//    if (l<n && arr[l]>arr[largest])
+//        largest = l;
+//
+//    // if right child is larger than largest so far
+//    if (r<n && arr[r]>arr[largest])
+//        largest = r;
+//
+//    // if largest is not root
+//    if (largest!=i) {
+//        swap(&arr[i], &arr[largest]);
+//
+//        // recursively heapify the affected sub-tree
+//        heapify(arr, n, largest);
+//    }
+//}
+//
+//void heapSort1(int arr[], int n)
+//{
+//    // build heap (rearrange array)
+//    for (int i = n/2-1; i>=0; i--)
+//        heapify(arr, n, i);
+//
+//    // one by one extract an element from heap
+//    for (int i = n-1; i>=0; i--) {
+//        // move current root to end
+//        swap(&arr[0], &arr[i]);
+//
+//        // call max heapify on the reduced heap
+//        heapify(arr, i, 0);
+//    }
+//}
 
+////=============== HeapSort =======================
 void maxHeapify(int arr[], int size, int i) //i - index
 {
     int l = 2*i+1;
-    int r = 2*i+2;
-    //int l = 2 * i ;
-    //int r = 2 * i + 1;
-    int largest;
-    //int largest = i;
-    int temp;
+    int r = l+1;//2*i+2
 
-    if (l<=size && arr[l]>arr[i]) {
+    int largest = i;
+
+    if (l<size && arr[l]>arr[i]) {
         largest = l;
     }
-    else {
-        largest = i;
-    }
 
-    if (r<=size && arr[r]>arr[largest]) {
+    if (r<size && arr[r]>arr[largest]) {
         largest = r;
     }
 
     if (largest!=i) {
-        temp = arr[i];
+        int temp = arr[i];
         arr[i] = arr[largest];
         arr[largest] = temp;
 
         maxHeapify(arr, size, largest);
     }
+
 }
 
-void buildMaxHeap(int arr[], int size)
+void heapSort(int arr[], int sz)
 {
-    int n = (size-1)/2;
-    for (int i = n; i>=0; i--)
-        maxHeapify(arr, size, i);
-}
+    // buildMaxHeap
+    for (int i = sz/2-1; i>=0; i--)
+        maxHeapify(arr, sz, i);
 
-void heapSort(int A[], int size)
-{
-    buildMaxHeap(A, size);
-    int temp;
-    int heapSize = size;
-    for (int i = size; i>=1; i--) {
-        temp = A[i];
-        A[i] = A[0];
-        A[0] = temp;
+    for (int i = sz-1; i>=0; i--) {
+        int temp = arr[0];
+        arr[0] = arr[i];
+        arr[i] = temp;
 
-        heapSize = heapSize-1;
-        maxHeapify(A, heapSize, 0);
-    }
-}
-////=============== HeapSort 1=======================
-
-void swap(int* a, int* b)
-{
-    int t = *a;
-    *a = *b;
-    *b = t;
-}
-
-void heapify(int arr[], int n, int i)
-{
-    int largest = i;
-    int l = 2*i+1;
-    int r = 2*i+2;
-
-    // if left child is larger than root
-    if (l<n && arr[l]>arr[largest])
-        largest = l;
-
-    // if right child is larger than largest so far
-    if (r<n && arr[r]>arr[largest])
-        largest = r;
-
-    // if largest is not root
-    if (largest!=i) {
-        swap(&arr[i], &arr[largest]);
-
-        // recursively heapify the affected sub-tree
-        heapify(arr, n, largest);
-    }
-}
-
-void heapSort1(int arr[], int n)
-{
-    // build heap (rearrange array)
-    for (int i = n/2-1; i>=0; i--)
-        heapify(arr, n, i);
-
-    // one by one extract an element from heap
-    for (int i = n-1; i>=0; i--) {
-        // move current root to end
-        swap(&arr[0], &arr[i]);
-
-        // call max heapify on the reduced heap
-        heapify(arr, i, 0);
+        maxHeapify(arr, i, 0);
     }
 }
 
